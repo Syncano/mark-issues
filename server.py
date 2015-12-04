@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config.from_object(os.getenv('MARK_ISSUES_SETTINGS'))
 
 
-@app.route('/')
+@app.route('/', methods=['POST'])
 def mark_issues():
     content = request.get_json(silent=True, force=True)
     event = request.headers.get('X-Github-Event')
