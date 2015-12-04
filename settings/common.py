@@ -1,0 +1,19 @@
+import os
+
+
+DEBUG = False
+
+BROKER_URL = os.getenv('BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+CELERY_IMPORTS = ('tasks', )
+
+JIRA_USERNAME = os.getenv('JIRA_USERNAME')
+JIRA_PASSWORD = os.getenv('JIRA_PASSWORD')
+JIRA_ROOT = os.getenv('JIRA_ROOT')
+
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+
+STAGING_BRANCHES = ('devel', 'development')
+PRODUCTION_BRANCHES = ('master', )
+ALLOWED_BRANCHES = STAGING_BRANCHES + PRODUCTION_BRANCHES
+ALLOWED_EVENTS = ('pull_request', 'release')
