@@ -40,3 +40,4 @@ profile/
 static/
 syncano-ansible
 Thumbs.db
+.vagrant
