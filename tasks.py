@@ -1,6 +1,5 @@
 import os
 import re
-import json
 import importlib
 import requests
 
@@ -110,6 +109,6 @@ class MarkIssuesTask(celery.Task):
 
     def update_jira_issue(self, issue):
         url = '{}/issue/{}'.format(self.jira_base_url, issue['key'])
-        data = {'fields': {'customfield_10200': issue['customfield_10200']}}
-        response = requests.put(url, data=json.dumps(data), auth=self.jira_auth)
+        json = {'fields': {'customfield_10200': issue['customfield_10200']}}
+        response = requests.put(url, json=json, auth=self.jira_auth)
         response.raise_for_status()
