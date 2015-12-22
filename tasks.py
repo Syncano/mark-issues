@@ -30,6 +30,14 @@ class MarkIssuesTask(celery.Task):
         pull_request = self.get_github_pull_request()
         branch = pull_request['base']['ref']
 
+        if pull_request['state'] != 'closed':
+            logger.info('Unsupported state of pull request "{state}"'.format(**pull_request))
+            return
+
+        if not pull_request['merged']:
+            logger.info('Pull request needs to be merged')
+            return
+
         if branch in SETTINGS.PRODUCTION_BRANCHES:
             self.deployed_to = 'Production'
         elif branch in SETTINGS.STAGING_BRANCHES:
