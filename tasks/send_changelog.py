@@ -22,7 +22,7 @@ class SendChangelogTask(SettingsMixin, GitHubMixin, JiraMixin, celery.Task):
         self.jira_auth = (self.SETTINGS.JIRA_USERNAME, self.SETTINGS.JIRA_PASSWORD)
 
         pull_request = self.get_pull_request()
-        # branch = pull_request['base']['ref']
+        branch = pull_request['base']['ref']
 
         if pull_request['state'] != 'closed':
             logger.info('Unsupported state of pull request "{state}"'.format(**pull_request))
@@ -32,9 +32,9 @@ class SendChangelogTask(SettingsMixin, GitHubMixin, JiraMixin, celery.Task):
             logger.info('Pull request needs to be merged')
             return
 
-        # if branch not in self.SETTINGS.PRODUCTION_BRANCHES:
-        #     logger.info('Invalid production branch "{}"'.format(branch))
-        #     return
+        if branch not in self.SETTINGS.PRODUCTION_BRANCHES:
+            logger.info('Invalid production branch "{}"'.format(branch))
+            return
 
         logger.info('Fetching issues from github...')
         issues = self.get_pull_request_issues(pull_request['title'], pull_request['body'])
@@ -57,7 +57,7 @@ class SendChangelogTask(SettingsMixin, GitHubMixin, JiraMixin, celery.Task):
 
         json = {
             'username': 'Changelog',
-            'channel': '#customergrowth-team',
+            'channel': self.SETTINGS.SLACK_CHANGELOG_CHANNEL,
             'attachments': [{
                 'color': '#C3C3C3',
                 'title': 'There was a new release',
