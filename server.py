@@ -3,6 +3,7 @@
 import os
 
 from flask import Flask, request
+
 from tasks import MarkIssuesTask
 
 app = Flask(__name__)

@@ -6,11 +6,16 @@ HOST = '0.0.0.0'
 
 BROKER_URL = os.getenv('BROKER_URL')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
-CELERY_IMPORTS = ('tasks', )
+CELERY_IMPORTS = (
+    'tasks.mark_issues',
+    'tasks.send_changelog',
+)
 
 JIRA_USERNAME = os.getenv('JIRA_USERNAME')
 JIRA_PASSWORD = os.getenv('JIRA_PASSWORD')
 JIRA_ROOT = os.getenv('JIRA_ROOT')
+
+SLACK_WEBHOOK = os.getenv('SLACK_WEBHOOK')
 
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 
