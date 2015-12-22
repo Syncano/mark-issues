@@ -4,8 +4,8 @@ import os
 
 from flask import Flask, request
 
-from tasks import MarkIssuesTask
-
+from tasks.mark_issues import MarkIssuesTask
+from tasks.send_changelog import SendChangelogTask
 
 app = Flask(__name__)
 app.config.from_object(os.getenv('MARK_ISSUES_SETTINGS'))
@@ -28,6 +28,9 @@ def mark_issues():
 
         if action == 'closed' and merged is True and base in app.config['ALLOWED_BRANCHES']:
             MarkIssuesTask().delay(repository, number)
+
+            if base in app.config['PRODUCTION_BRANCHES']:
+                SendChangelogTask().delay(repository, number)
 
     return 'OK'
 
