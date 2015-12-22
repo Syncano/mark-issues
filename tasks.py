@@ -1,15 +1,14 @@
+import importlib
 import os
 import re
-import importlib
+
 import requests
 
 from celery.utils.log import get_task_logger
-
 from worker import celery
 
 logger = get_task_logger(__name__)
 SETTINGS = importlib.import_module(os.getenv('MARK_ISSUES_SETTINGS'))
-ISSUE_PATTERN = re.compile('[A-Za-z]{1,10}-[\d]+', re.I)
 JQL = '("Deployed to" != {} OR "Deployed to" = EMPTY) AND issuekey in ({})'
 
 
@@ -78,11 +77,11 @@ class MarkIssuesTask(celery.Task):
 
             for commit in response.json():
                 message = re.sub('FRONT-|SYNGUI-', 'DASH-', commit['commit']['message'])
-                issues.extend(ISSUE_PATTERN.findall(message))
+                issues.extend(SETTINGS.ISSUE_PATTERN.findall(message))
 
         for text in extra:
             message = re.sub('FRONT-|SYNGUI-', 'DASH-', text)
-            issues.extend(ISSUE_PATTERN.findall(text))
+            issues.extend(SETTINGS.ISSUE_PATTERN.findall(text))
 
         return list(set(issues))
 

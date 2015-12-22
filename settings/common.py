@@ -1,5 +1,5 @@
 import os
-
+import re
 
 DEBUG = False
 HOST = '0.0.0.0'
@@ -18,3 +18,4 @@ STAGING_BRANCHES = ('devel', 'development')
 PRODUCTION_BRANCHES = ('master', )
 ALLOWED_BRANCHES = STAGING_BRANCHES + PRODUCTION_BRANCHES
 ALLOWED_EVENTS = ('pull_request', 'release')
+ISSUE_PATTERN = re.compile('[A-Za-z]{1,10}-[\d]+', re.I)

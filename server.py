@@ -3,9 +3,7 @@
 import os
 
 from flask import Flask, request
-
 from tasks import MarkIssuesTask
-
 
 app = Flask(__name__)
 app.config.from_object(os.getenv('MARK_ISSUES_SETTINGS'))
