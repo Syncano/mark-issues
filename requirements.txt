@@ -3,3 +3,5 @@ flask==0.10.1
 requests==2.8.1
 redis==2.10.5
 gunicorn==19.4.1
+flake8==2.4.1
+isort==4.0.0
