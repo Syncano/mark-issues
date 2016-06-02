@@ -45,7 +45,7 @@ class SendChangelogTask(SettingsMixin, GitHubMixin, JiraMixin, celery.Task):
             issues_for_changelog = self.get_jira_issues(issues)
             self.send_changelog(pull_request, issues_for_changelog)
 
-        return 'Done, bay!'
+        return 'Done, bye!'
 
     def send_changelog(self, pull_request, issues):
         colors = {
