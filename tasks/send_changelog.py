@@ -83,14 +83,19 @@ class SendChangelogTask(SettingsMixin, GitHubMixin, JiraMixin, celery.Task):
             attachments[issue_type] = attachments.get(issue_type, {'fallback': [], 'text': [], 'color': None})
             attachment = attachments[issue_type]
 
+            key = issue['key']
+            epic_key = fields.get('customfield_10007', '')
+
             format_kwargs = {
-                'key': issue['key'],
-                'url': '{}/browse/{}'.format(self.SETTINGS.JIRA_ROOT, issue['key']),
+                'key': key,
+                'url': '{}/browse/{}'.format(self.SETTINGS.JIRA_ROOT, key),
+                'epic_key': epic_key,
+                'epic_url': '{}/browse/{}'.format(self.SETTINGS.JIRA_ROOT, epic_key),
                 'summary': fields['summary'],
             }
 
-            attachment['fallback'].append('[{key}] {summary}: {url}'.format(**format_kwargs))
-            attachment['text'].append('<{url}|[{key}]> {summary}'.format(**format_kwargs))
+            attachment['fallback'].append('[{key}] {summary}: {url} Epic: [{epic_key}]'.format(**format_kwargs))
+            attachment['text'].append('<{url}|[{key}]> {summary} Epic <{epic_url}|[{epic_key}]>'.format(**format_kwargs))
 
         for _type, content in attachments.iteritems():
             json['attachments'].append({
