@@ -68,6 +68,11 @@ class SendChangelogTask(SettingsMixin, GitHubMixin, JiraMixin, celery.Task):
                         'short': True
                     },
                     {
+                        'title': 'Pull request',
+                        'value': pull_request['title'],
+                        'short': True
+                    },
+                    {
                         'title': 'Release done by',
                         'value': pull_request['merged_by']['login'],
                         'short': True
